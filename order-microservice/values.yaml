@@ -1,0 +1,71 @@
+replicaCount: 1
+
+image:
+  repository: manuexcd/ordermicroservice
+  tag: 0.0.1-SNAPSHOT
+  pullPolicy: Always
+
+env: 
+  - name: SPRING_DATASOURCE_URL
+    value: jdbc:mysql://mariadb-order:3306/order_microservice?autoReconnect=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+  - name: MICROSERVICES_USERS_URL
+    value: http://user-microservice:443/users/
+  - name: MICROSERVICES_PRODUCTS_URL
+    value: http://product-microservice:443/products/
+  - name: SPRING_DATASOURCE_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: mariadb-order-credentials
+        key: username
+  - name: SPRING_DATASOURCE_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: mariadb-order-credentials
+        key: password
+
+containerPort: 8080
+
+livenessProbe:
+  path: /actuator/info
+  port: http
+
+readinessProbe:
+  path: /actuator/health
+  port: http
+
+service:
+  type: LoadBalancer
+  port: 443
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+ingress:
+  enabled: false
+
+secret:
+  name: mariadb-order-credentials
+  type: Opaque
+  data:
+    username: dXNlcm5hbWU=
+    password: cGFzc3dvcmQ=
+
+resources:
+  requests:
+    memory: "1024Mi"
+    cpu: 0.25
+  limits:
+    memory: "1024Mi"
+    cpu: 0.75
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+hpa:
+  enabled: true
+  maxReplicas: 3
+  memory: 70

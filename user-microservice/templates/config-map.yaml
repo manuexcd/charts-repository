@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-configmap
+data:
+  google-credentials.json: |-
+{{ .Files.Get "google-credentials.json" | indent 4}}

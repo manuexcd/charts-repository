@@ -1,0 +1,69 @@
+replicaCount: 1
+
+image:
+  repository: manuexcd/usermicroservice
+  tag: 0.0.1-SNAPSHOT
+  pullPolicy: Always
+
+env: 
+  - name: SPRING_DATASOURCE_URL
+    value: jdbc:mysql://mariadb-user:3306/user_microservice?autoReconnect=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+  - name: GOOGLE_CREDENTIALS_PATH
+    value: /config/google-credentials.json
+  - name: SPRING_DATASOURCE_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: mariadb-user-credentials
+        key: username
+  - name: SPRING_DATASOURCE_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: mariadb-user-credentials
+        key: password
+
+containerPort: 8080
+
+livenessProbe:
+  path: /actuator/info
+  port: 8080
+
+readinessProbe:
+  path: /actuator/health
+  port: 8080
+
+service:
+  type: LoadBalancer
+  port: 443
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+ingress:
+  enabled: false
+
+secret:
+  name: mariadb-user-credentials
+  type: Opaque
+  data:
+    username: dXNlcm5hbWU=
+    password: cGFzc3dvcmQ=
+
+resources:
+  requests:
+    memory: "1024Mi"
+    cpu: 0.25
+  limits:
+    memory: "1024Mi"
+    cpu: 0.75
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+hpa:
+  enabled: true
+  maxReplicas: 3
+  memory: 70

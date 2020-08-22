@@ -1,0 +1,67 @@
+replicaCount: 3
+
+image:
+  repository: manuexcd/productmicroservice
+  tag: 0.0.1-SNAPSHOT
+  pullPolicy: Always
+
+env: 
+  - name: MONGODB_URL
+    value: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb-product:27017/products
+  - name: MONGO_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: mongodb-credentials
+        key: username
+  - name: MONGO_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: mongodb-credentials
+        key: password
+
+containerPort: 8080
+
+livenessProbe:
+  path: /actuator/info
+  port: http
+
+readinessProbe:
+  path: /actuator/health
+  port: http
+
+service:
+  type: LoadBalancer
+  port: 443
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+ingress:
+  enabled: false
+
+secret:
+  name: mongodb-credentials
+  type: Opaque
+  data:
+    username: dXNlcm5hbWU=
+    password: cGFzc3dvcmQ=
+
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "500m"
+  limits:
+    memory: "1024Mi"
+    cpu: 1
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+hpa:
+  enabled: true
+  maxReplicas: 5
+  memory: 70
