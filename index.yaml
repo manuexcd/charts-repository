@@ -1,0 +1,33 @@
+apiVersion: v1
+entries:
+  order-microservice:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2020-08-22T18:23:41.420403188+02:00"
+    description: A Helm chart for Kubernetes
+    digest: af1c3a7c8c91c29ffadeb62ed0dd26bba96371d5683a8253c61dd0fdc246f788
+    name: order-microservice
+    urls:
+    - https://manuexcd.github.io/charts-repository/order-microservice-0.1.0.tgz
+    version: 0.1.0
+  product-microservice:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2020-08-22T18:23:41.421256031+02:00"
+    description: A Helm chart for Kubernetes
+    digest: a3155cab9e70610a47e2f5df84967b05b61db4b9962ad3a28ffd80351a7ce585
+    name: product-microservice
+    urls:
+    - https://manuexcd.github.io/charts-repository/product-microservice-0.1.0.tgz
+    version: 0.1.0
+  user-microservice:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2020-08-22T18:23:41.421991553+02:00"
+    description: A Helm chart for Kubernetes
+    digest: baaf3c6404e528cb4407c3dde7772b4f7a874ca8abdfe6dddb293c37a174d26f
+    name: user-microservice
+    urls:
+    - https://manuexcd.github.io/charts-repository/user-microservice-0.1.0.tgz
+    version: 0.1.0
+generated: "2020-08-22T18:23:41.419239971+02:00"
